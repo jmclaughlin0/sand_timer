@@ -1,7 +1,7 @@
 {
   "name": "game_timer",
   "version": "0.1.0",
- "homepage": "https://jmclaughlin0.github.io/sand-timer",
+ "homepage": "https://jmclaughlin0.github.io/sand_timer",
   "private": false,
   "dependencies": {
     "@testing-library/jest-dom": "^5.17.0",
