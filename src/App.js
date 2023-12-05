@@ -5,9 +5,9 @@ import {Button, Divider, Dropdown, Header, Modal, Segment} from "semantic-ui-rea
 
 export default function App() {
 
-    const [timeInterval, setTimeInterval] = useState(3)
-    const [count1, setCount1] = useState(3);
-    const [count2, setCount2] = useState(3);
+    const [timeInterval, setTimeInterval] = useState(30)
+    const [count1, setCount1] = useState(30);
+    const [count2, setCount2] = useState(30);
     const [interval, setIntervalState] = useState(null);
 
     const [count1State, setCount1State] = useState(null)
@@ -66,10 +66,6 @@ export default function App() {
                 </Modal.Header>
             </Modal>
 
-            <Button onClick={() => setModalOpen(true)}>
-                Set Team Times
-            </Button>
-
             <Modal
                 open={modalOpen}
                 >
@@ -85,36 +81,36 @@ export default function App() {
 
             </Modal>
 
+            <div className = 'App-header'>
+                <Segment placeholder inverted color = 'red'
+                         onClick={() => {
+                             setIntervalState(1000);
+                             setCount1State(-1)
+                             setCount2State(1)
+                         }}
+                >
+                    <div>
+                        <Header as = 'h3'>Team 1:</Header>
+                        <Divider/>
+                        <Header as = 'h1'> {count1} </Header>
+                    </div>
+                </Segment>
 
-            <Segment placeholder inverted color = 'red'
-                onClick={() => {
-                    setIntervalState(1000);
-                    setCount1State(-1)
-                    setCount2State(1)
-                }}
-            >
-                <div>
-                    <Header as = 'h3'>Team 1:</Header>
-                    <Divider/>
-                    <Header as = 'h1'> {count1} </Header>
-                </div>
-            </Segment>
-
-            <Divider section/>
-            <Segment placeholder inverted color = 'blue'
-                    onClick={() => {
-                        setIntervalState(1000);
-                        setCount1State(1)
-                        setCount2State(-1)
-                    }}
-            >
-                <div>
-                    <Header as = 'h3'>Team 2:</Header>
-                    <Divider/>
-                    <Header as = 'h1'> {count2} </Header>
-                </div>
-            </Segment>
-
+                <Divider section/>
+                <Segment placeholder inverted color = 'blue'
+                         onClick={() => {
+                             setIntervalState(1000);
+                             setCount1State(1)
+                             setCount2State(-1)
+                         }}
+                >
+                    <div>
+                        <Header as = 'h3'>Team 2:</Header>
+                        <Divider/>
+                        <Header as = 'h1'> {count2} </Header>
+                    </div>
+                </Segment>
+            </div>
 
             <Button
                 onClick={() => {
@@ -131,7 +127,14 @@ export default function App() {
             >
                 Pause Interval
             </Button>
+
+            <Button onClick={() => setModalOpen(true)}>
+                Set Team Times
+            </Button>
+
         </div>
+
+
     );
 }
 
