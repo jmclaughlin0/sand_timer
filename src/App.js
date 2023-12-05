@@ -1,23 +1,89 @@
-import React, { useState, useEffect, useRef } from "react";
-import ReactDOM from "react-dom";
-import {Button, Divider, Header, Segment} from "semantic-ui-react";
+import React, {useState, useEffect, useRef} from "react";
+import {Button, Divider, Dropdown, Header, Modal, Segment} from "semantic-ui-react";
+// import useSound from "use-sound";
+
 
 export default function App() {
-    const [count1, setCount1] = useState(30);
-    const [count2, setCount2] = useState(30);
+
+    const [timeInterval, setTimeInterval] = useState(3)
+    const [count1, setCount1] = useState(3);
+    const [count2, setCount2] = useState(3);
     const [interval, setIntervalState] = useState(null);
 
     const [count1State, setCount1State] = useState(null)
 
     const [count2State, setCount2State] = useState(null)
 
+    const [modalOpen, setModalOpen] = useState(false)
+
+    const [timerEnd, setTimerEnd] = useState(false)
+
+    // const [playSound] = useSound('../public/alarm.mp3')
+
+    const optionsList = [{value: 30, text: ' 30 s'}, {value: 45, text:  ' 45 s'}, {value: 60, text:  ' 60 s'}, {value: 90, text:  ' 90 s'}]
+
     useInterval(() => {
-        setCount1(count1 + count1State);
-        setCount2(count2 + count2State);
+        if((count1&&count2)>0){
+            setCount1(count1 + count1State);
+            setCount2(count2 + count2State);
+        }else{
+            pauseClock()
+            setTimerEnd(true)
+            // playSound()
+        }
     }, interval);
 
+
+    function handleUpdate(data){
+        setTimeInterval(data.value)
+    }
+
+    useEffect(()=>{
+        setCount1(timeInterval)
+        setCount2(timeInterval)
+    }, [timeInterval])
+
+
+    function resetClock(){
+        setCount1(timeInterval);
+        setCount2(timeInterval);
+        setIntervalState(null);
+    }
+
+    function pauseClock() {
+        setIntervalState(null);
+    }
+
+
     return (
-        <div align='middle'>
+        <div align='center'>
+
+            <Modal centered
+                open={timerEnd}
+            >
+                <Button size={'small'} icon = 'close' onClick={() => setTimerEnd(false)}/>
+                <Modal.Header>{"Time's Up!!!"}
+                </Modal.Header>
+            </Modal>
+
+            <Button onClick={() => setModalOpen(true)}>
+                Set Team Times
+            </Button>
+
+            <Modal
+                open={modalOpen}
+                >
+                <Button size={'small'} icon = 'close' onClick={() => setModalOpen(false)}/>
+                <Modal.Header>{"Input how many seconds you'd like each team to have: "}
+                    <Dropdown
+                        floating
+                        options={optionsList}
+                        defaultValue={optionsList[0].value}
+                        onChange={(e,data) => handleUpdate(data)}
+                    />
+                </Modal.Header>
+
+            </Modal>
 
 
             <Segment placeholder inverted color = 'red'
@@ -52,8 +118,7 @@ export default function App() {
 
             <Button
                 onClick={() => {
-                    setCount1(30);
-                    setCount2(30);
+                    resetClock()
                 }}
             >
                 Reset Count
@@ -61,7 +126,7 @@ export default function App() {
 
             <Button
                 onClick={() => {
-                    setIntervalState(null);
+                    pauseClock()
                 }}
             >
                 Pause Interval
@@ -89,7 +154,7 @@ export function useInterval(callback, delay) {
         if (delay !== null) {
             let id = setInterval(tick, delay);
 
-            //cleaning function set for the future (autoexecuted when "delay" change)
+            //cleaning function set for the future (auto-executed when "delay" change)
             return () => {
                 clearInterval(id);
             };
